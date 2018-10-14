@@ -1,10 +1,12 @@
 package api;
 
 import api.apiController.PersonApiController;
+import api.apiController.SongApiController;
 import api.apiController.VoteApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.PersonDto;
+import api.dtos.SongDto;
 import api.dtos.VoteDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
@@ -22,6 +24,8 @@ public class Dispatcher {
     private PersonApiController personApiController = new PersonApiController();
 
     private VoteApiController voteApiController = new VoteApiController();
+
+    private SongApiController songApiController = new SongApiController();
 
 
     public void submit(HttpRequest request, HttpResponse response) {
@@ -59,6 +63,8 @@ public class Dispatcher {
         } else if (request.isEqualsPath(PersonApiController.PERSONS + PersonApiController.ID_ID + VoteApiController.VOTES)) {
             response.setBody(this.voteApiController.create((VoteDto) request.getBody(), request.getPath(1)));
 
+        } else if (request.isEqualsPath(SongApiController.SONGS)) {
+            response.setBody(this.songApiController.create((SongDto) request.getBody()));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
