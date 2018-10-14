@@ -50,7 +50,7 @@ public class Dispatcher {
         if (request.isEqualsPath(PersonApiController.PERSONS)) {
             response.setBody(this.personApiController.create((PersonDto) request.getBody()));
         } else if (request.isEqualsPath(PersonApiController.PERSONS + PersonApiController.ID_ID + VoteApiController.VOTES)) {
-            response.setBody(this.voteApiController.create((VoteDto) request.getBody()));
+            response.setBody(this.voteApiController.create((VoteDto) request.getBody(), request.getPath(1)));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
