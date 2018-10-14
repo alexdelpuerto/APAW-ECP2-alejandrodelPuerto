@@ -10,10 +10,12 @@ public class VoteApiController {
 
     private VoteBusinessController voteBusinessController = new VoteBusinessController();
 
-    public String create(VoteDto voteDto) {
+    public String create(VoteDto voteDto, String personId) {
         this.validate(voteDto, "voteDto");
-        this.validate(voteDto.getValue(), "VoteDto value");
-        return this.voteBusinessController.create(voteDto);
+        if (voteDto.getValue() < 0 || voteDto.getValue() > 10) {
+            throw new ArgumentNotValidException("Vote value must be between 0 and 10");
+        }
+        return this.voteBusinessController.create(voteDto, personId);
     }
 
     private void validate(Object property, String message) {
