@@ -6,6 +6,8 @@ import api.exceptions.ArgumentNotValidException;
 
 public class VoteApiController {
 
+    public static final String VOTES = "/votes";
+
     private VoteBusinessController voteBusinessController = new VoteBusinessController();
 
     public String create(VoteDto voteDto) {
