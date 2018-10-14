@@ -9,7 +9,7 @@ public class Vote {
     private String comment;
     private boolean positive;
 
-    public Vote(String id, int value, String comment) {
+    public Vote(int value, String comment) {
         this.value = value;
         this.comment = comment;
         this.positive = value >= 5;
