@@ -6,6 +6,11 @@ import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.PersonDto;
 import api.dtos.VoteDto;
+import api.apiController.SongApiController;
+import api.daos.DaoFactory;
+import api.daos.memory.DaoMemoryFactory;
+import api.dtos.PersonDto;
+import api.dtos.SongDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
@@ -20,7 +25,9 @@ public class Dispatcher {
     }
 
     private PersonApiController personApiController = new PersonApiController();
+
     private VoteApiController voteApiController = new VoteApiController();
+
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -53,8 +60,10 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(PersonApiController.PERSONS)) {
             response.setBody(this.personApiController.create((PersonDto) request.getBody()));
+
         } else if (request.isEqualsPath(PersonApiController.PERSONS + PersonApiController.ID_ID + VoteApiController.VOTES)) {
             response.setBody(this.voteApiController.create((VoteDto) request.getBody(), request.getPath(1)));
+
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
