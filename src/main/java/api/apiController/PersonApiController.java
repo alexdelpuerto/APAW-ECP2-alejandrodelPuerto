@@ -7,6 +7,7 @@ import api.exceptions.ArgumentNotValidException;
 public class PersonApiController {
 
     public static final String PERSONS = "/persons";
+    public static final String ID_ID = "/{id}";
 
     private PersonBusinessController personBusinessController = new PersonBusinessController();
 

@@ -1,10 +1,13 @@
 package api;
 
 import api.apiController.PersonApiController;
+import api.apiController.VoteApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.PersonDto;
+import api.dtos.VoteDto;
 import api.exceptions.ArgumentNotValidException;
+import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
 import http.HttpRequest;
 import http.HttpResponse;
@@ -17,6 +20,7 @@ public class Dispatcher {
     }
 
     private PersonApiController personApiController = new PersonApiController();
+    private VoteApiController voteApiController = new VoteApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -36,6 +40,9 @@ public class Dispatcher {
         } catch (ArgumentNotValidException | RequestInvalidException exception) {
             response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
             response.setStatus(HttpStatus.BAD_REQUEST);
+        } catch (NotFoundException exception) {
+            response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
+            response.setStatus(HttpStatus.NOT_FOUND);
         } catch (Exception exception) {  // Unexpected
             exception.printStackTrace();
             response.setBody(String.format(ERROR_MESSAGE, exception));
@@ -46,6 +53,8 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(PersonApiController.PERSONS)) {
             response.setBody(this.personApiController.create((PersonDto) request.getBody()));
+        } else if (request.isEqualsPath(PersonApiController.PERSONS + PersonApiController.ID_ID + VoteApiController.VOTES)) {
+            response.setBody(this.voteApiController.create((VoteDto) request.getBody(), request.getPath(1)));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
