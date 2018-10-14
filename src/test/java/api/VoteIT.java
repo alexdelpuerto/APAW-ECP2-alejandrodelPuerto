@@ -1,10 +1,9 @@
 package api;
 
 import api.apiController.PersonApiController;
-import api.apiController.SongApiController;
+import api.apiController.VoteApiController;
 import api.dtos.PersonDto;
-import api.dtos.SongDto;
-import api.entities.Category;
+import api.dtos.VoteDto;
 import http.Client;
 import http.HttpException;
 import http.HttpRequest;
@@ -14,17 +13,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SongIT {
+public class VoteIT {
 
     @Test
-    void testCreateSong() {
-        this.createSong("Song1");
+    void testCreateVote() {
+        this.createVote();
     }
 
-    private String createSong(String title) {
+    private String createVote() {
         String personId = this.createPerson();
-        HttpRequest request = HttpRequest.builder(SongApiController.SONGS)
-                .body(new SongDto(title, Category.ROCK, personId)).post();
+        HttpRequest request = HttpRequest.builder(PersonApiController.PERSONS + "/" + personId + VoteApiController.VOTES)
+                .body(new VoteDto(5, "Me ha gustado mucho", true)).post();
         return (String) new Client().submit(request).getBody();
     }
 
@@ -34,17 +33,18 @@ public class SongIT {
     }
 
     @Test
-    void testCreateSongPersonIdNotFound() {
-        HttpRequest request = HttpRequest.builder(SongApiController.SONGS)
-                .body(new SongDto("Song1", Category.ELECTRONIC, "asdasd")).post();
+    void testCreateVotePersonIdNotFound() {
+        VoteDto voteDto = new VoteDto(1, "Muy malas canciones", false);
+        HttpRequest request = HttpRequest.builder(PersonApiController.PERSONS + "/123" + VoteApiController.VOTES).body(voteDto).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
     @Test
-    void testCreateSongWithoutCategoryPerson() {
-        HttpRequest request = HttpRequest.builder(SongApiController.SONGS)
-                .body(new SongDto("Song1", null, null)).post();
+    void testCreateVoteWithInvalidValue() {
+        String personId = this.createPerson();
+        VoteDto voteDto = new VoteDto(23, "Muy malas canciones", false);
+        HttpRequest request = HttpRequest.builder(PersonApiController.PERSONS + "/" + personId + VoteApiController.VOTES).body(voteDto).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }

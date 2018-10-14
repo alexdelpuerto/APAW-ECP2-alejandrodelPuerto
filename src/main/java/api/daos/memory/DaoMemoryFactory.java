@@ -2,12 +2,15 @@ package api.daos.memory;
 
 import api.daos.DaoFactory;
 import api.daos.PersonDao;
-import api.daos.SongDao;
+import api.daos.VoteDao;
+
 
 public class DaoMemoryFactory extends DaoFactory {
 
     private PersonDao personDao;
-    private SongDao songDao;
+
+    private VoteDao voteDao;
+
 
     @Override
     public PersonDao getPersonDao() {
@@ -18,10 +21,10 @@ public class DaoMemoryFactory extends DaoFactory {
     }
 
     @Override
-    public SongDao getSongDao() {
-        if (this.songDao == null) {
-            this.songDao = new SongDaoMemory();
+    public VoteDao getVoteDao() {
+        if (this.voteDao == null) {
+            this.voteDao = new VoteDaoMemory();
         }
-        return this.songDao;
+        return this.voteDao;
     }
 }

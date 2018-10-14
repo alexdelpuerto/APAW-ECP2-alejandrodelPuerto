@@ -6,7 +6,7 @@ import java.util.List;
 public class Person {
     private String id;
     private String nick;
-    private List<Vote> votes;
+    private List<String> votes;
 
     public Person(String nick) {
         this.nick = nick;
@@ -29,12 +29,12 @@ public class Person {
         this.nick = nick;
     }
 
-    public List<Vote> getVotes() {
+    public List<String> getVotes() {
         return votes;
     }
 
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
+    public void addVotes(String voteId) {
+        this.votes.add(voteId);
     }
 
     @Override

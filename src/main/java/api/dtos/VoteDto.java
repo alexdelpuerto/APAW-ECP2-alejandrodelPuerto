@@ -1,27 +1,22 @@
-package api.entities;
+package api.dtos;
 
 import java.time.LocalDateTime;
 
-public class Vote {
-    private String id;
+public class VoteDto {
+
     private int value;
-    private LocalDateTime date;
     private String comment;
     private boolean positive;
+    private LocalDateTime date;
 
-    public Vote(int value, String comment) {
+    public VoteDto(int value) {
+        this.value = value;
+    }
+
+    public VoteDto(int value, String comment, boolean positive) {
         this.value = value;
         this.comment = comment;
-        this.positive = value >= 5;
-        this.date = LocalDateTime.now();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.positive = positive;
     }
 
     public int getValue() {
@@ -30,14 +25,6 @@ public class Vote {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     public String getComment() {
@@ -56,14 +43,21 @@ public class Vote {
         this.positive = positive;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
-        return "Vote{" +
-                "id='" + id + '\'' +
-                ", value=" + value +
-                ", date=" + date +
+        return "VoteDto{" +
+                "value=" + value +
                 ", comment='" + comment + '\'' +
                 ", positive=" + positive +
+                ", date=" + date +
                 '}';
     }
 }
