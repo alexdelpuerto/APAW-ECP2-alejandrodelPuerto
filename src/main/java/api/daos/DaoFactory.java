@@ -15,6 +15,4 @@ public abstract class DaoFactory {
         DaoFactory.daoFactory = daoFactory;
         LogManager.getLogger(DaoFactory.class).debug("   create DaoMemoryFactory");
     }
-
-    public abstract PersonDao getPersonDao();
 }
