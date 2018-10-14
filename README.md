@@ -4,7 +4,7 @@
 
 ## Diseño de entidades
  
-
+![ClassDiagram](https://github.com/alexdelpuerto/APAW-ECP2-alejandrodelPuerto/blob/master/docs/ClassDiagram.PNG)
 
 ## API
 ### POST /persons
