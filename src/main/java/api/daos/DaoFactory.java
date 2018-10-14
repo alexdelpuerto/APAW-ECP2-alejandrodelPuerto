@@ -17,4 +17,6 @@ public abstract class DaoFactory {
     }
 
     public abstract PersonDao getPersonDao();
+
+    public abstract SongDao getSongDao();
 }
