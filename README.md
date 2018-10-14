@@ -17,7 +17,6 @@
 ---
 ### POST /persons/{id}/votes
 #### Parámetros del cuerpo
-- `id`: String (**requerido**)
 - `value`: Integer (**requerido**)
 - `comment`: String
 #### Respuesta
