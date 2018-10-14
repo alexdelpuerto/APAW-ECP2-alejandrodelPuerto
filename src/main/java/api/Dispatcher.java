@@ -1,9 +1,11 @@
 package api;
 
 import api.apiController.PersonApiController;
+import api.apiController.SongApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.PersonDto;
+import api.dtos.SongDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.RequestInvalidException;
 import http.HttpRequest;
@@ -17,6 +19,7 @@ public class Dispatcher {
     }
 
     private PersonApiController personApiController = new PersonApiController();
+    private SongApiController songApiController = new SongApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -46,6 +49,8 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(PersonApiController.PERSONS)) {
             response.setBody(this.personApiController.create((PersonDto) request.getBody()));
+        } else if (request.isEqualsPath(SongApiController.SONGS)) {
+            response.setBody(this.songApiController.create((SongDto) request.getBody()));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
