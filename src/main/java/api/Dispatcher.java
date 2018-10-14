@@ -24,6 +24,7 @@ public class Dispatcher {
             switch (request.getMethod()) {
                 case POST:
                     this.doPost(request, response);
+                    break;
                 case GET:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case PUT:
@@ -45,6 +46,8 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(PersonApiController.PERSONS)) {
             response.setBody(this.personApiController.create((PersonDto) request.getBody()));
+        } else {
+            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
     }
 }
