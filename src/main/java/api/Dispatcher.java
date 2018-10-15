@@ -12,6 +12,7 @@ import api.entities.Category;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
+import org.apache.logging.log4j.LogManager;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.HttpStatus;
@@ -28,6 +29,8 @@ public class Dispatcher {
 
     private SongApiController songApiController = new SongApiController();
 
+    private final String REQUEST_ERROR = "request error: ";
+
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -37,10 +40,10 @@ public class Dispatcher {
                     this.doPost(request, response);
                     break;
                 case GET:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
                 case PUT:
                 case PATCH:
-                    this.doPatch(request, response);
+                    this.doPatch(request);
                     break;
                 case DELETE:
                 default:
@@ -53,7 +56,7 @@ public class Dispatcher {
             response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
             response.setStatus(HttpStatus.NOT_FOUND);
         } catch (Exception exception) {  // Unexpected
-            exception.printStackTrace();
+            LogManager.getLogger().error(exception.getStackTrace());
             response.setBody(String.format(ERROR_MESSAGE, exception));
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -69,15 +72,15 @@ public class Dispatcher {
         } else if (request.isEqualsPath(SongApiController.SONGS)) {
             response.setBody(this.songApiController.create((SongDto) request.getBody()));
         } else {
-            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
         }
     }
 
-    private void doPatch(HttpRequest request, HttpResponse response) {
+    private void doPatch(HttpRequest request) {
         if (request.isEqualsPath(SongApiController.SONGS + SongApiController.ID_ID + SongApiController.CATEGORY)) {
             this.songApiController.updateCategory(request.getPath(1), (Category) request.getBody());
         } else {
-            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
         }
     }
 }

@@ -1,6 +1,5 @@
 package api.daos;
 
-import api.entities.Song;
 import org.apache.logging.log4j.LogManager;
 
 public abstract class DaoFactory {
