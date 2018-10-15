@@ -40,6 +40,8 @@ public class Dispatcher {
                     this.doPost(request, response);
                     break;
                 case GET:
+                    this.doGet(request, response);
+                    break;
                 case PUT:
                 case PATCH:
                     this.doPatch(request);
@@ -70,6 +72,14 @@ public class Dispatcher {
 
         } else if (request.isEqualsPath(SongApiController.SONGS)) {
             response.setBody(this.songApiController.create((SongDto) request.getBody()));
+        } else {
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
+    private void doGet(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(SongApiController.SONGS)) {
+            response.setBody(this.songApiController.readAll());
         } else {
             throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
         }

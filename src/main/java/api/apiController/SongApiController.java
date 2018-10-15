@@ -2,8 +2,11 @@ package api.apiController;
 
 import api.businessController.SongBusinessController;
 import api.dtos.SongDto;
+import api.dtos.SongIdTitleDto;
 import api.entities.Category;
 import api.exceptions.ArgumentNotValidException;
+
+import java.util.List;
 
 public class SongApiController {
 
@@ -22,6 +25,10 @@ public class SongApiController {
     public void updateCategory(String songId, Category category) {
         this.validate(category, "category");
         this.songBusinessController.updateCategorySong(songId, category);
+    }
+
+    public List<SongIdTitleDto> readAll() {
+        return this.songBusinessController.readAll();
     }
 
     private void validate(Object property, String message) {

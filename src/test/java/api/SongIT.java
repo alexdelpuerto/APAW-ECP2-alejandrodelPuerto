@@ -4,6 +4,7 @@ import api.apiController.PersonApiController;
 import api.apiController.SongApiController;
 import api.dtos.PersonDto;
 import api.dtos.SongDto;
+import api.dtos.SongIdTitleDto;
 import api.entities.Category;
 import http.Client;
 import http.HttpException;
@@ -11,19 +12,22 @@ import http.HttpRequest;
 import http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SongIT {
 
     @Test
     void testCreateSong() {
-        this.createSong();
+        this.createSong("Song");
     }
 
-    private String createSong() {
+    private String createSong(String title) {
         String personId = this.createPerson();
-        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).body(new SongDto("Song1", Category.POP, personId)).post();
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).body(new SongDto(title, Category.POP, personId)).post();
         return (String) new Client().submit(request).getBody();
     }
 
@@ -63,7 +67,7 @@ public class SongIT {
 
     @Test
     void testUpdateCategory() {
-        String songID = this.createSong();
+        String songID = this.createSong("Song");
         HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
                 .expandPath(songID).path(SongApiController.CATEGORY).body(Category.ELECTRONIC).patch();
         new Client().submit(request);
@@ -79,10 +83,20 @@ public class SongIT {
 
     @Test
     void testUpdateCategoryWithInvalidCategory() {
-        String songId = this.createSong();
+        String songId = this.createSong("Song");
         HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
                 .expandPath(songId).path(SongApiController.CATEGORY).body(null).patch();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    void testReadAll() {
+        for (int i = 0; i < 10; i++) {
+            this.createSong("Song " + i);
+        }
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).get();
+        List<SongIdTitleDto> songsList = (List<SongIdTitleDto>) new Client().submit(request).getBody();
+        assertTrue(songsList.size() >= 10);
     }
 }
