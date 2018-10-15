@@ -2,6 +2,7 @@ package api.businessController;
 
 import api.daos.DaoFactory;
 import api.dtos.SongDto;
+import api.entities.Category;
 import api.entities.Person;
 import api.entities.Song;
 import api.exceptions.NotFoundException;
@@ -18,5 +19,12 @@ public class SongBusinessController {
         Song song = new Song(songDto.getTitle(), person, songDto.getCategory());
         DaoFactory.getDaoFactory().getSongDao().save(song);
         return song.getId();
+    }
+
+    public void updateCategorySong(String songId, Category category) {
+        Song song = DaoFactory.getDaoFactory().getSongDao().read(songId)
+                .orElseThrow(() -> new NotFoundException("Song (" + songId + ")"));
+        song.setCategory(category);
+        DaoFactory.getDaoFactory().getSongDao().save(song);
     }
 }

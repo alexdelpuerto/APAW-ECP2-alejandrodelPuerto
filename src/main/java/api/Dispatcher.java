@@ -8,6 +8,7 @@ import api.daos.memory.DaoMemoryFactory;
 import api.dtos.PersonDto;
 import api.dtos.SongDto;
 import api.dtos.VoteDto;
+import api.entities.Category;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
@@ -39,6 +40,8 @@ public class Dispatcher {
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case PUT:
                 case PATCH:
+                    this.doPatch(request, response);
+                    break;
                 case DELETE:
                 default:
                     throw new RequestInvalidException("method error: " + request.getMethod());
@@ -65,6 +68,14 @@ public class Dispatcher {
 
         } else if (request.isEqualsPath(SongApiController.SONGS)) {
             response.setBody(this.songApiController.create((SongDto) request.getBody()));
+        } else {
+            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
+    private void doPatch(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(SongApiController.SONGS + SongApiController.ID_ID + SongApiController.CATEGORY)) {
+            this.songApiController.updateCategory(request.getPath(1), (Category) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

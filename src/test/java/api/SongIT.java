@@ -60,4 +60,29 @@ public class SongIT {
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
+
+    @Test
+    void testUpdateCategory() {
+        String songID = this.createSong();
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath(songID).path(SongApiController.CATEGORY).body(Category.ELECTRONIC).patch();
+        new Client().submit(request);
+    }
+
+    @Test
+    void testUpdateCategoryWithSongIdNotFound() {
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath("adsdad").path(SongApiController.CATEGORY).body(Category.ELECTRONIC).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void testUpdateCategoryWithInvalidCategory() {
+        String songId = this.createSong();
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath(songId).path(SongApiController.CATEGORY).body(null).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
 }
