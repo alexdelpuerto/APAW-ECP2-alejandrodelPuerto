@@ -22,13 +22,19 @@ public class SongApiController {
         return this.songBusinessController.create(songDto);
     }
 
+    public List<SongIdTitleDto> readAll() {
+        return this.songBusinessController.readAll();
+    }
+
+    public void updateSong(String sondId, SongDto songDto) {
+        this.validate(songDto, "songDto");
+        this.validate(songDto.getTitle(), "SongDto Title");
+        this.songBusinessController.updateSong(sondId, songDto);
+    }
+
     public void updateCategory(String songId, Category category) {
         this.validate(category, "category");
         this.songBusinessController.updateCategorySong(songId, category);
-    }
-
-    public List<SongIdTitleDto> readAll() {
-        return this.songBusinessController.readAll();
     }
 
     private void validate(Object property, String message) {

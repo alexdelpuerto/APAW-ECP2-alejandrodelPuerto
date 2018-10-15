@@ -1,6 +1,7 @@
 package api.businessController;
 
 import api.daos.DaoFactory;
+import api.dtos.PersonDto;
 import api.dtos.SongDto;
 import api.dtos.SongIdTitleDto;
 import api.entities.Category;
@@ -25,6 +26,20 @@ public class SongBusinessController {
         return song.getId();
     }
 
+    public List<SongIdTitleDto> readAll() {
+        return DaoFactory.getDaoFactory().getSongDao().findAll()
+                .stream().map(SongIdTitleDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public void updateSong(String songId, SongDto songDto) {
+        Song song = DaoFactory.getDaoFactory().getSongDao().read(songId)
+                .orElseThrow(() -> new NotFoundException("Song id: " + songId));
+        song.setTitle(songDto.getTitle());
+        song.setCategory(songDto.getCategory());
+        DaoFactory.getDaoFactory().getSongDao().save(song);
+    }
+
     public void updateCategorySong(String songId, Category category) {
         Song song = DaoFactory.getDaoFactory().getSongDao().read(songId)
                 .orElseThrow(() -> new NotFoundException("Song (" + songId + ")"));
@@ -32,9 +47,5 @@ public class SongBusinessController {
         DaoFactory.getDaoFactory().getSongDao().save(song);
     }
 
-    public List<SongIdTitleDto> readAll() {
-        return DaoFactory.getDaoFactory().getSongDao().findAll()
-                .stream().map(SongIdTitleDto::new)
-                .collect(Collectors.toList());
-    }
+
 }
