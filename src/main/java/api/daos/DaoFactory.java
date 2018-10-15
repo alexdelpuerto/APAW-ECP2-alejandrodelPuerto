@@ -15,4 +15,12 @@ public abstract class DaoFactory {
         DaoFactory.daoFactory = daoFactory;
         LogManager.getLogger(DaoFactory.class).debug("   create DaoMemoryFactory");
     }
+
+    public abstract PersonDao getPersonDao();
+
+    public abstract VoteDao getVoteDao();
+
+    public abstract SongDao getSongDao();
+
+
 }

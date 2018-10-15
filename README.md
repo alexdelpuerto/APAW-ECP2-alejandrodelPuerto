@@ -17,11 +17,11 @@
 ---
 ### POST /persons/{id}/votes
 #### Parámetros del cuerpo
-- `id`: String (**requerido**)
 - `value`: Integer (**requerido**)
 - `comment`: String
 #### Respuesta
 - 200 OK 
+    - `id`: String
 - 403 BAD_REQUEST
 - 404 NOT_FOUND
 ---
@@ -36,7 +36,7 @@
 - 403 BAD_REQUEST
 - 404 NOT_FOUND
 ---
-### PATH /songs/{id}/category
+### PATCH /songs/{id}/category
 #### Parámetros del cuerpo
 - `category`: String (**requerido**)
 #### Respuesta

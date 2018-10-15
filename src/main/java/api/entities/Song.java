@@ -6,8 +6,12 @@ public class Song {
     private Person person;
     private Category category;
 
-    public Song(String id, String title, Person person, Category category) {
-        this.id = id;
+    public Song(String title, Person person) {
+        this.title = title;
+        this.person = person;
+    }
+
+    public Song(String title, Person person, Category category) {
         this.title = title;
         this.person = person;
         this.category = category;
@@ -29,11 +33,21 @@ public class Song {
         this.title = title;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
-        return "api.entities.Song{" +
+        return "Song{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
+                ", person=" + person +
+                ", category=" + category +
                 '}';
     }
 }
