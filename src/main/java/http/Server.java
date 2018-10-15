@@ -1,7 +1,6 @@
 package http;
 
 import api.Dispatcher;
-import api.Dispatcher;
 
 public class Server {
     private Dispatcher dispatcher = new Dispatcher();
