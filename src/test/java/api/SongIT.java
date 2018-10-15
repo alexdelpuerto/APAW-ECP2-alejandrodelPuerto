@@ -66,6 +66,35 @@ public class SongIT {
     }
 
     @Test
+    void testUpdateSong() {
+        String personId = this.createPerson();
+        String songID = this.createSong("Song");
+        SongDto songDto = new SongDto("Cancion", Category.REGGAETON, personId);
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath(songID).body(songDto).put();
+        new Client().submit(request);
+    }
+
+    @Test
+    void testUpdateSongWithSongIdNotFound() {
+        String personId = this.createPerson();
+        SongDto songDto = new SongDto("Cancion", Category.REGGAETON, personId);
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath("dasdasd").body(songDto).put();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void testUpdateSongWithoutSongDtoTitle() {
+        String personId = this.createPerson();
+        String songId = this.createSong("Song");
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID).expandPath(songId).body(new SongDto(null, Category.ROCK, personId)).put();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
     void testUpdateCategory() {
         String songID = this.createSong("Song");
         HttpRequest request = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)

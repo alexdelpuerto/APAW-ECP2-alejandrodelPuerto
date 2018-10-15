@@ -52,6 +52,7 @@
 ### PUT /songs/{id}
 #### Parámetros del cuerpo
 - `title`: String (**requerido**)
+- `category`: Category
 #### Respuesta
 - 200 OK 
 - 403 BAD_REQUEST
