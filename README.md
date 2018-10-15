@@ -36,7 +36,7 @@
 - 403 BAD_REQUEST
 - 404 NOT_FOUND
 ---
-### PATH /songs/{id}/category
+### PATCH /songs/{id}/category
 #### Parámetros del cuerpo
 - `category`: String (**requerido**)
 #### Respuesta
