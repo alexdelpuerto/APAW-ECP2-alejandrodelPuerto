@@ -2,10 +2,14 @@ package api.businessController;
 
 import api.daos.DaoFactory;
 import api.dtos.SongDto;
+import api.dtos.SongIdTitleDto;
 import api.entities.Category;
 import api.entities.Person;
 import api.entities.Song;
 import api.exceptions.NotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SongBusinessController {
 
@@ -26,5 +30,11 @@ public class SongBusinessController {
                 .orElseThrow(() -> new NotFoundException("Song (" + songId + ")"));
         song.setCategory(category);
         DaoFactory.getDaoFactory().getSongDao().save(song);
+    }
+
+    public List<SongIdTitleDto> readAll() {
+        return DaoFactory.getDaoFactory().getSongDao().findAll()
+                .stream().map(SongIdTitleDto::new)
+                .collect(Collectors.toList());
     }
 }

@@ -2,12 +2,12 @@ package api.dtos;
 
 import api.entities.Song;
 
-public class SongTitleDto {
+public class SongIdTitleDto {
 
     private String id;
     private String title;
 
-    public SongTitleDto(Song song) {
+    public SongIdTitleDto(Song song) {
         this.id = song.getId();
         this.title = song.getTitle();
     }
@@ -30,7 +30,7 @@ public class SongTitleDto {
 
     @Override
     public String toString() {
-        return "SongTitleDto{" +
+        return "SongIdTitleDto{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 '}';
