@@ -29,7 +29,7 @@ public class Dispatcher {
 
     private SongApiController songApiController = new SongApiController();
 
-    private final String REQUEST_ERROR = "request error: ";
+    private static final String REQUEST_ERROR = "request error: ";
 
 
     public void submit(HttpRequest request, HttpResponse response) {
@@ -40,7 +40,6 @@ public class Dispatcher {
                     this.doPost(request, response);
                     break;
                 case GET:
-                    throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
                 case PUT:
                 case PATCH:
                     this.doPatch(request);
