@@ -49,6 +49,8 @@ public class Dispatcher {
                     this.doPatch(request);
                     break;
                 case DELETE:
+                    this.doDelete(request);
+                    break;
                 default:
                     throw new RequestInvalidException("method error: " + request.getMethod());
             }
@@ -98,6 +100,14 @@ public class Dispatcher {
     private void doPatch(HttpRequest request) {
         if (request.isEqualsPath(SongApiController.SONGS + SongApiController.ID_ID + SongApiController.CATEGORY)) {
             this.songApiController.updateCategory(request.getPath(1), (Category) request.getBody());
+        } else {
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
+    private void doDelete(HttpRequest request) {
+        if (request.isEqualsPath(SongApiController.SONGS + SongApiController.ID_ID)) {
+            this.songApiController.delete(request.getPath(1));
         } else {
             throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
         }

@@ -37,6 +37,10 @@ public class SongApiController {
         this.songBusinessController.updateCategorySong(songId, category);
     }
 
+    public void delete(String songId) {
+        this.songBusinessController.delete(songId);
+    }
+
     private void validate(Object property, String message) {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is missing");
