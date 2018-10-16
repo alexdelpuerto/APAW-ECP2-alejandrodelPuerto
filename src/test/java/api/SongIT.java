@@ -128,4 +128,15 @@ public class SongIT {
         List<SongIdTitleDto> songsList = (List<SongIdTitleDto>) new Client().submit(request).getBody();
         assertTrue(songsList.size() >= 10);
     }
+
+    @Test
+    void testDeleteSong() {
+        String songId = this.createSong("Song");
+        HttpRequest request = HttpRequest.builder(SongApiController.SONGS).get();
+        int countSong = ((List<SongIdTitleDto>) new Client().submit(request).getBody()).size();
+        HttpRequest request2 = HttpRequest.builder(SongApiController.SONGS).path(SongApiController.ID_ID)
+                .expandPath(songId).delete();
+        new Client().submit(request2);
+        assertTrue(((List<SongIdTitleDto>) new Client().submit(request).getBody()).size() < countSong);
+    }
 }
