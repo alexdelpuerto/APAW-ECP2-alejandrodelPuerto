@@ -47,5 +47,7 @@ public class SongBusinessController {
         DaoFactory.getDaoFactory().getSongDao().save(song);
     }
 
-
+    public void delete(String songId) {
+        DaoFactory.getDaoFactory().getSongDao().deleteById(songId);
+    }
 }
