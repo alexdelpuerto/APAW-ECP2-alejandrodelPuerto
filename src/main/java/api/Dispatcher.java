@@ -84,6 +84,8 @@ public class Dispatcher {
     private void doGet(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SongApiController.SONGS)) {
             response.setBody(this.songApiController.readAll());
+        } else if (request.isEqualsPath(SongApiController.SONGS + SongApiController.SEARCH)) {
+            response.setBody(this.songApiController.findByVoteGreaterOrEqualsTo(request.getParams().get("q")));
         } else {
             throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
         }
