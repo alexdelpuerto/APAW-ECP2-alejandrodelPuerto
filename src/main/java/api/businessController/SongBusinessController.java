@@ -59,7 +59,7 @@ public class SongBusinessController {
         for (Song s : songs) {
             List<String> votes = s.getPerson().getVotes();
             for (String vote : votes) {
-                media += Integer.parseInt(Arrays.toString(vote.split("value=", 0)));
+                media += DaoFactory.getDaoFactory().getVoteDao().read(vote).get().getValue();
             }
             media = media / votes.size();
             if (media >= value) {

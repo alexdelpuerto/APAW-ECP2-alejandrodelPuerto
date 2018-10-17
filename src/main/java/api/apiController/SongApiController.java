@@ -45,7 +45,7 @@ public class SongApiController {
     }
 
     public ArrayList<String> findByVoteGreaterOrEqualsTo(String query) {
-        int value = Integer.parseInt(Arrays.toString(query.split("vote:>=", 0)));
+        int value = Integer.valueOf(query.split(":>=")[1]);
         this.validate(value, "value");
         if (this.isValidValue(value)) {
             return this.songBusinessController.findByVoteGreaterOrEqualsTo(value);
