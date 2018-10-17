@@ -6,6 +6,8 @@ import api.dtos.SongIdTitleDto;
 import api.entities.Category;
 import api.exceptions.ArgumentNotValidException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SongApiController {
@@ -13,6 +15,7 @@ public class SongApiController {
     public static final String SONGS = "/songs";
     public static final String ID_ID = "/{id}";
     public static final String CATEGORY = "/category";
+    public static final String SEARCH = "/search";
 
     private SongBusinessController songBusinessController = new SongBusinessController();
 
@@ -39,6 +42,20 @@ public class SongApiController {
 
     public void delete(String songId) {
         this.songBusinessController.delete(songId);
+    }
+
+    public ArrayList<String> findByVoteGreaterOrEqualsTo(String query) {
+        int value = Integer.parseInt(Arrays.toString(query.split("vote:>=", 0)));
+        this.validate(value, "value");
+        if (this.isValidValue(value)) {
+            return this.songBusinessController.findByVoteGreaterOrEqualsTo(value);
+        } else {
+            throw new ArgumentNotValidException("Value value must be between 0 and 10");
+        }
+    }
+
+    private boolean isValidValue(int value) {
+        return value >= 0 && value <= 10;
     }
 
     private void validate(Object property, String message) {

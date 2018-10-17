@@ -31,7 +31,7 @@ public abstract class GenericDaoMemory<T> implements GenericDao<T, String> {
     public Optional<T> read(String id) {
         T entity = map.get(id);
         LogManager.getLogger(this.getClass()).debug("   read(" + id + "): " + entity);
-        return (entity == null) ? Optional.empty() : Optional.of(entity);
+        return Optional.ofNullable(entity);
     }
 
     @Override
