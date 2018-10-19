@@ -45,17 +45,18 @@ public class SongApiController {
     }
 
     public ArrayList<String> findByVoteGreaterOrEqualsTo(String query) {
-        int value = Integer.valueOf(query.split(":>=")[1]);
-        this.validate(value, "value");
-        if (this.isValidValue(value)) {
-            return this.songBusinessController.findByVoteGreaterOrEqualsTo(value);
-        } else {
-            throw new ArgumentNotValidException("Value value must be between 0 and 10");
+        this.validate(query, "query param q");
+        if (!"vote".equals(query.split(":>=")[0])) {
+            throw new ArgumentNotValidException("query param is incorrect, missing 'vote:>='");
+        } else if (!isValid(query)) {
+            throw new ArgumentNotValidException("vote must be between 0 and 10");
         }
+        return this.songBusinessController.findByVoteGreaterOrEqualsTo(Integer.valueOf(query.split(":>=")[1]));
     }
 
-    private boolean isValidValue(int value) {
-        return value >= 0 && value <= 10;
+    private boolean isValid(String query) {
+        int value = Integer.valueOf(query.split(":>=")[1]);
+        return (value >= 0 && value <= 10);
     }
 
     private void validate(Object property, String message) {
