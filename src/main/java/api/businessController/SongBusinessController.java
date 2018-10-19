@@ -67,7 +67,9 @@ public class SongBusinessController {
     private int calcularMedia(List<String> votes) {
         int media = 0;
         for (String vote : votes) {
-            media += DaoFactory.getDaoFactory().getVoteDao().read(vote).get().getValue();
+            if (DaoFactory.getDaoFactory().getVoteDao().read(vote).isPresent()) {
+                media += DaoFactory.getDaoFactory().getVoteDao().read(vote).get().getValue();
+            }
         }
         if (media != 0) {
             media = media / votes.size();
