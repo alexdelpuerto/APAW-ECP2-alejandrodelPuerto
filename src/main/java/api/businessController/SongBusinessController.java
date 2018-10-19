@@ -8,6 +8,7 @@ import api.entities.Person;
 import api.entities.Song;
 import api.exceptions.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,5 +49,29 @@ public class SongBusinessController {
 
     public void delete(String songId) {
         DaoFactory.getDaoFactory().getSongDao().deleteById(songId);
+    }
+
+    public ArrayList<String> findByVoteGreaterOrEqualsTo(int value) {
+        ArrayList<String> results = new ArrayList<>();
+        List<Song> songs = DaoFactory.getDaoFactory().getSongDao().findAll();
+        for (Song s : songs) {
+            List<String> votes = s.getPerson().getVotes();
+            int media = this.calcularMedia(votes);
+            if (media >= value) {
+                results.add("{id:" + s.getId() + ",title:" + s.getTitle() + "}");
+            }
+        }
+        return results;
+    }
+
+    private int calcularMedia(List<String> votes) {
+        int media = 0;
+        for (String vote : votes) {
+            media += DaoFactory.getDaoFactory().getVoteDao().read(vote).get().getValue();
+        }
+        if (media != 0) {
+            media = media / votes.size();
+        }
+        return media;
     }
 }
