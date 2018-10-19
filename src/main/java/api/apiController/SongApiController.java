@@ -7,7 +7,6 @@ import api.entities.Category;
 import api.exceptions.ArgumentNotValidException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SongApiController {
