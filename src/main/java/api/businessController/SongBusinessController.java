@@ -6,10 +6,12 @@ import api.dtos.SongIdTitleDto;
 import api.entities.Category;
 import api.entities.Person;
 import api.entities.Song;
+import api.entities.Vote;
 import api.exceptions.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SongBusinessController {
@@ -67,8 +69,9 @@ public class SongBusinessController {
     private int calcularMedia(List<String> votes) {
         int media = 0;
         for (String vote : votes) {
-            if (DaoFactory.getDaoFactory().getVoteDao().read(vote).isPresent()) {
-                media += DaoFactory.getDaoFactory().getVoteDao().read(vote).get().getValue();
+            Optional<Vote> value = DaoFactory.getDaoFactory().getVoteDao().read(vote);
+            if (value.isPresent()) {
+                media += value.get().getValue();
             }
         }
         if (media != 0) {
