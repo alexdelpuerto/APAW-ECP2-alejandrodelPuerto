@@ -20,7 +20,7 @@ public class VoteIT {
         this.createVote();
     }
 
-    private String createVote() {
+    public String createVote() {
         String personId = this.createPerson();
         HttpRequest request = HttpRequest.builder(PersonApiController.PERSONS + "/" + personId + VoteApiController.VOTES)
                 .body(new VoteDto(5, "Me ha gustado mucho", true)).post();
